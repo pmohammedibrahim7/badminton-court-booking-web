@@ -1,0 +1,18 @@
+# Laravel & PHP
+/vendor
+/.env
+/.env.example
+/.phpunit.result.cache
+/storage/*.key
+/storage/logs/*.log
+
+# Node / Vite
+/node_modules
+/public/frontend
+
+# IDE / OS files
+/.idea
+*.log
+*.sqlite
+.DS_Store
+Thumbs.db
