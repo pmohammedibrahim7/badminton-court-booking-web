@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: badminton-court-booking-web
+    env: php
+    # Render will automatically install PHP extensions needed for Laravel.
+    # Build steps:
+    buildCommand: |
+      # Copy example env and install dependencies
+      cp .env.example .env
+      composer install --no-interaction --prefer-dist --optimize-autoloader
+      # Generate application key (replace with your own if you already have one)
+      php artisan key:generate --no-interaction
+      # Run migrations (ensure DATABASE_URL or DB_* vars are set in Render)
+      php artisan migrate --force
+      # Cache configs for performance
+      php artisan config:cache
+    # Start the Laravel built‑in server (Render passes the PORT env var)
+    startCommand: php -S 0.0.0.0:${PORT} -t public
+    healthCheckPath: /
+    # Optional: you can specify a custom domain after deployment
+    # domains:
+    #   - your-subdomain.onrender.com
