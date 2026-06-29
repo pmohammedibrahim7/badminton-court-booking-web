@@ -43,10 +43,14 @@ WORKDIR /app
 
 # Copy only composer files first for better layer caching
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copy the rest of the application source code
 COPY . .
+
+# Run Laravel Artisan commands now that the full source is present
+RUN php artisan package:discover --ansi && \
+    php artisan key:generate --no-interaction
 
 # Ensure storage and cache directories are writable by the web server user
 RUN mkdir -p storage/framework/cache/data && \
