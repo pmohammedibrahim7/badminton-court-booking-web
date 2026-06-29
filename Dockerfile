@@ -48,20 +48,22 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 # Copy the rest of the application source code
 COPY . .
 
-# Run Laravel Artisan commands now that the full source is present
-RUN php artisan package:discover --ansi && \
-    php artisan key:generate --no-interaction
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Ensure storage and cache directories are writable by the web server user
-RUN mkdir -p storage/framework/cache/data && \
+RUN mkdir -p storage/framework/cache/data storage/logs bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache && \
     chown -R www-data:www-data storage bootstrap/cache
 
-# Generate an application key (will be overridden by .env if present)
-RUN php artisan key:generate --no-interaction
+
+
+
 
 # Expose the port Render will provide via the $PORT environment variable
-EXPOSE 8080
+# Start the application via entrypoint script
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Start the built‑in PHP server bound to the dynamic $PORT value
 CMD ["sh", "-c", "php -S 0.0.0.0:${PORT} -t public"]
