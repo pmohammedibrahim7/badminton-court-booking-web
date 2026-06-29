@@ -1,5 +1,5 @@
-# Use the official PHP 8.2 FPM Alpine base image
-FROM php:8.2-fpm-alpine
+# Use the official PHP 8.3 FPM Alpine base image
+FROM php:8.3-fpm-alpine
 
 # Install system packages required for the PHP extensions we need.
 # postgresql-dev is added so pdo_pgsql can be compiled.
