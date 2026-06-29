@@ -164,11 +164,7 @@ export default function PublicBooking({ onGoToLogin }) {
         </p>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '3fr 1fr',
-        gap: '32px'
-      }}>
+      <div className="public-grid">
         {/* Main Scheduler Area */}
         <div>
           <div className="scheduler-container">
