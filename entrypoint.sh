@@ -15,6 +15,9 @@ set -e
 #    Fresh migration guarantees the seed runs every time the container is created.
 php artisan storage:link
 
+# Run migrations and seed (MySQL)
+php artisan migrate:fresh --seed --force
+
 
 # 3️⃣ Cache config & routes (optional but speeds up requests)
 php artisan config:cache || true
