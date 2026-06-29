@@ -1,4 +1,8 @@
 #!/bin/sh
+# If APP_KEY is missing, generate one (this will write to .env)
+if [ -z "$APP_KEY" ]; then
+  php artisan key:generate --force
+fi
 set -e
 
 # Run database migrations (if any)
