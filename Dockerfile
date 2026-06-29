@@ -1,5 +1,21 @@
-# Use the official PHP 8.3 FPM Alpine base image
+# Multi‑stage build: first stage builds the React frontend
+FROM node:20-alpine AS frontend-builder
+WORKDIR /frontend
+
+# Copy the React source and install dependencies
+COPY badminton-court-booking-web-frontend/package*.json ./
+RUN npm ci
+
+# Copy the rest of the frontend source
+COPY badminton-court-booking-web-frontend/. ./
+
+# Build the production assets (Vite will output to ./dist)
+RUN npm run build
+
+# -------------------------------------------------
+# Second stage: PHP runtime (unchanged)
 FROM php:8.3-fpm-alpine
+
 
 # Install system packages required for the PHP extensions we need.
 # postgresql-dev is added so pdo_pgsql can be compiled.
@@ -51,6 +67,7 @@ COPY . .
 # Copy entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY --from=frontend-builder /frontend/dist /app/public/frontend
 
 # Ensure storage and cache directories are writable by the web server user
 RUN mkdir -p storage/framework/cache/data storage/logs bootstrap/cache && \
