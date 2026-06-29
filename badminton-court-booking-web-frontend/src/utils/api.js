@@ -2,6 +2,8 @@ const getCsrfToken = () => {
   return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 };
 
+export const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || window.location.origin;
+
 export const api = {
   get: async (url) => {
     const response = await fetch(url, {

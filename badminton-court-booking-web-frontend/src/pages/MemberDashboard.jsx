@@ -10,6 +10,7 @@ import {
   LogOut,
   User as UserIcon
 } from 'lucide-react';
+import { API_BASE_URL } from '../utils/api';
 
 export default function MemberDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('book'); // book | card | tournaments
@@ -287,7 +288,7 @@ export default function MemberDashboard({ user, onLogout }) {
                       <div style={{ fontSize: '9px', color: 'var(--accent)', fontWeight: 600 }}>MEMBERSHIP PASS</div>
                     </div>
                     {user.profile_pic ? (
-                      <img src={user.profile_pic} alt={user.name} className="card-holder-pic" />
+                      <img src={user.profile_pic.startsWith('http') ? user.profile_pic : `${API_BASE_URL}/${user.profile_pic}`} alt={user.name} className="card-holder-pic" />
                     ) : (
                       <div className="card-holder-pic" style={{ display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)' }}>
                         <UserIcon size={24} style={{ color: 'var(--accent)' }} />
